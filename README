@@ -6,8 +6,24 @@ Repo: https://github.com/jtobiska/Qt-Code-Club.git
 Instructions
 ------------
 
-TODO: Write awesome instructions...
-                                    
+Each member of Qt Code Club should create a directory with their username under
+the top-level members/ directory.  This directory is your personal work space
+and can be organized however you see fit.  However, we recommend creating a
+python/ directory immediately under your username directory (if you're using
+python), as your primary python path.
 
+    Example: members/thebeeland/python
 
+Instructions for each month's project will be posted to the Qt-Code-Club wiki,
+which can be found at https://github.com/jtobiska/Qt-Code-Club/wiki.
 
+To submit a solution to the monthly project, simply commit a single executable
+file into the top-level bin directory.  Solutions should be named using the
+following convention:
+
+    bin/${project}_${username}
+
+Solution executables are free to use libraries from user work spaces, but they
+should be able to be run without requiring any special setup.  We recommend 
+manipulating sys.path within your executable in order to load modules from your
+work space.
