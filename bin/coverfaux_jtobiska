@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+# =============================================================================
+# coverfaux_jtobiska
+# =============================================================================
+
+# =============================================================================
+# IMPORTS
+# =============================================================================
+
+# Standard imports
+import os
+import sys
+
+# Add my python dir from my user work space to sys.path
+rootDir = os.path.dirname(os.path.dirname(__file__))
+sys.path.insert(0, os.path.join(rootDir, 'members', 'jtobiska', 'python'))
+
+# Personal imports
+import coverfaux
+
+# =============================================================================
+# FUNCTIONS
+# =============================================================================
+
+def main():
+    print "This will ultimately be my solution to Project 1: Cover Faux."
+
+# =============================================================================
+
+if __name__ == '__main__':
+    main()
