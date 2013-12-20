@@ -10,6 +10,7 @@ key = "6ded3932b3446fd2a3ea0979f4270c02"
 class Art(QtCore.QObject):
 
     downloadComplete = QtCore.Signal()
+    downloadProgress = QtCore.Signal(int, int)
 
     def __init__(self, data=None, fetch=False, parent=None):
         super(Art, self).__init__(parent)
@@ -33,10 +34,14 @@ class Art(QtCore.QObject):
             request.setUrl(QtCore.QUrl(self.url))
             self._networkReply = self._networkManager.get(request)
             self._networkReply.finished.connect(self._finishDownload)
+            self._networkReply.downloadProgress.connect(self._downloadProgress)
 
     def _finishDownload(self):
         self.image = QtGui.QImage.fromData(self._networkReply.readAll())
         self.downloadComplete.emit()
+
+    def _downloadProgress(self, received, total):
+        self.downloadProgress.emit(received, total)
 
 
 

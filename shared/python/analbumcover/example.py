@@ -18,10 +18,19 @@ class Demo(QtGui.QLabel):
         album.fetchMetadata()
         self._art = album.arts[-1]
         self._art.downloadComplete.connect(self.showImage)
+        self._art.downloadProgress.connect(self.showProgress)
         self._art.download(blocking=False)
     def showImage(self):
         self.setPixmap(QtGui.QPixmap(self._art.image))
         self.setFixedSize(self._art.image.size())
+        self.setText("")
+
+    def showProgress(self, received, total):
+
+        # The images are so small that unless you are on a very
+        # slow connection or getting a really big image you probably
+        # don't want to show this.
+        self.setText(str(received/total))
 
 if 1:
 
