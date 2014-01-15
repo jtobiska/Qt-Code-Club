@@ -1,11 +1,12 @@
 __author__ = 'mkessler'
 
 import json
+import urllib
 import urllib2
 import tempfile
 from PySide import QtGui, QtCore, QtNetwork
 
-key = "6ded3932b3446fd2a3ea0979f4270c02"
+_KEY = "6ded3932b3446fd2a3ea0979f4270c02"
 
 class Art(QtCore.QObject):
 
@@ -87,9 +88,9 @@ class AnAlbum:
         base = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo"
         request = "{base}&api_key={key}&artist={artist}&album={album}&format=json".format(
             base=base,
-            key=key,
-            artist=self.artist,
-            album=self.album,
+            key=_KEY,
+            artist=urllib.quote(self.artist),
+            album=urllib.quote(self.album),
         )
         response = urllib2.urlopen(request).read()
         rawinfo = json.loads(response)
@@ -116,5 +117,29 @@ class AnAlbum:
         self._artist = value
 
 
+class TopArtistsFetcher(QtCore.QObject):
 
+    downloadComplete = QtCore.Signal()
+    downloadProgress = QtCore.Signal(int, int)
 
+    def __init__(self):
+        self._networkManager = QtNetwork.QNetworkAccessManager()
+        self._networkReply = None
+        self._results = None
+
+    def _finishDownload(self):
+        self._results = json.loads(self._networkReply.readAll())
+        self.downloadComplete.emit()
+                                                                                            
+    def _downloadProgress(self, received, total):
+        self.downloadProgress.emit(received, total)
+ 
+    def start(self):
+        url = "http://ws.audioscrobbler.com/2.0/?method=chart.getTopArtists&api_key={key}&format=json".format(
+            key=_KEY,
+        )   
+        request = QtNetwork.QNetworkRequest()
+        request.setUrl(QtCore.QUrl(url))
+        self._networkReply = self._networkManager.get(request)
+        self._networkReply.finished.connect(self._finishDownload)
+        self._networkReply.downloadProgress.connect(self._downloadProgress)
