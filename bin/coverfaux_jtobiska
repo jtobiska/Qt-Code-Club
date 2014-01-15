@@ -8,22 +8,32 @@
 # =============================================================================
 
 # Standard imports
+import inspect
 import os
+from PySide import QtGui
 import sys
 
-# Add my python dir from my user work space to sys.path
-rootDir = os.path.dirname(os.path.dirname(__file__))
+# Add the shared python dir and my user work space python dir to sys.path
+rootDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(rootDir, 'shared', 'python'))
 sys.path.insert(0, os.path.join(rootDir, 'members', 'jtobiska', 'python'))
 
+# Shared imports
+import analbumcover
+
 # Personal imports
-import coverfaux
+from coverfaux.ui.albumview import AlbumsWidget
 
 # =============================================================================
 # FUNCTIONS
 # =============================================================================
 
 def main():
-    print "This will ultimately be my solution to Project 1: Cover Faux."
+    app = QtGui.QApplication(sys.argv)
+    w = AlbumsWidget()
+    w.show()
+    w.raise_()
+    app.exec_()
 
 # =============================================================================
 
